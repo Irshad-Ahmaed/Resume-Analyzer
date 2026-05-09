@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Resume Analyzer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+
+<body>
+    <div id="loading-overlay">
+        <div class="spinner"></div>
+        <div class="loading-text">AI IS ANALYZING...</div>
+    </div>
+    <header>
+        <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
+            <div class="logo" style="font-weight: 800; font-size: 1.25rem; color: var(--primary-color);">
+                RESUME<span style="color: var(--text-main);">AI</span>
+            </div>
+            <nav>
+                <a href="/dashboard">Dashboard</a>
+                <a href="/history">History</a>
+                <a href="/logout" style="color: var(--error-color);">Logout</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2026 AI Resume Analyzer</p>
+    </footer>
+
+</body>
+
+</html>

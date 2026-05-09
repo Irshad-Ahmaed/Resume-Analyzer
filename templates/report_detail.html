@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="report-detail-container">
+    <div style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: flex-start;">
+        <div>
+            <a href="/history" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; display: block; margin-bottom: 0.5rem;">&larr; Back to History</a>
+            <h2>Analysis Result: {{ report.role }}</h2>
+            <p style="color: var(--text-muted);">{{ report.created_at.strftime("%B %d, %Y at %H:%M") }}</p>
+        </div>
+    </div>
+
+    <div class="card result-section" style="margin-bottom: 3rem;">
+        <h3 style="font-size: 1.1rem; margin-bottom: 1rem; color: var(--text-main);">Resume Text Analyzed</h3>
+        <div style="background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: 0.5rem; font-size: 0.9rem; color: var(--text-muted); max-height: 200px; overflow-y: auto; white-space: pre-wrap;">{{ report.resume_text }}</div>
+    </div>
+
+    <div class="results-container card">
+        {% if result.error %}
+        <div class="error-msg" style="color: var(--error-color); padding: 1rem; background: rgba(239, 68, 68, 0.1); border-radius: 0.5rem;">
+            <strong>Error:</strong> {{result.error}}
+        </div>
+        {% else %}
+        
+        <div class="result-section">
+            <h3>Matched Skills</h3>
+            <ul class="tag-list">
+                {% for skill in result.get('skills', []) %}
+                <li class="tag">{{skill}}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="result-section">
+            <h3>Missing Skills (Gaps)</h3>
+            <ul class="tag-list">
+                {% for skill in result.get('missing_skills', []) %}
+                <li class="tag" style="background: rgba(6, 182, 212, 0.1); color: var(--secondary-color); border-color: rgba(6, 182, 212, 0.2);">{{skill}}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="result-section">
+            <h3>Learning Roadmap</h3>
+            <div class="roadmap-list">
+                {% for item in result.get('roadmap', []) %}
+                <div class="roadmap-item">
+                    {% if item is mapping %}
+                        <strong style="color: var(--primary-color); display: block; margin-bottom: 0.25rem;">{{ item.skill or item.title }}</strong>
+                        <span style="font-size: 0.9rem; color: var(--text-muted);">{{ item.description or item.content }}</span>
+                    {% else %}
+                        {{ item }}
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="result-section">
+            <h3>Interview Questions</h3>
+            <div class="question-list">
+                {% for item in result.get('interview_questions', []) %}
+                <div class="question-item">
+                    {% if item is mapping %}
+                        <strong style="color: var(--secondary-color); display: block; margin-bottom: 0.25rem;">Q: {{ item.question }}</strong>
+                        <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.5rem; padding-left: 1rem; border-left: 2px solid rgba(255,255,255,0.1);">
+                            <span style="color: var(--success-color); font-weight: 600;">A:</span> {{ item.answer }}
+                        </p>
+                    {% else %}
+                        {{ item }}
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

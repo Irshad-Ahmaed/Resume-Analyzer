@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="auth-container card">
+    <div class="auth-header">
+        <h2>Create Account</h2>
+        <p style="color: var(--text-muted);">Start your AI-powered career journey today</p>
+    </div>
+
+    <form method="post">
+        <input required type="email" name="email" placeholder="Email Address">
+        <input required type="password" name="password" placeholder="Create Password" minlength="6">
+        <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: -0.5rem;">Use at least 6 characters</p>
+        <button type="submit">Create Account</button>
+    </form>
+
+    <div class="auth-footer">
+        Already have an account?
+        <a href="/login">Login</a>
+    </div>
+</div>
+
+{% endblock %}

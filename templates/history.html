@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Your Analysis History</h2>
+
+{% if reports %}
+<div class="history-grid">
+    {% for r in reports %}
+    <div class="history-card">
+        <div class="date">{{ r.date }}</div>
+        <h3 style="color: var(--primary-color); margin-bottom: 0.5rem; font-size: 1.1rem;">{{ r.role or "Untitled Analysis" }}</h3>
+        
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
+            {{ r.resume }}
+        </p>
+
+        <div class="card-footer" style="display: flex; justify-content: space-between; align-items: center; margin-top: auto;">
+            <div class="tag-count" style="font-size: 0.75rem; background: rgba(255,255,255,0.05); padding: 2px 8px; border-radius: 4px;">
+                {{ r.result.get('skills', [])|length }} Skills Found
+            </div>
+            <a href="{{ url_for('view_report', report_id=r.id) }}" style="font-size: 0.8rem; color: var(--primary-color); text-decoration: none; font-weight: 600;">Details &rarr;</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="card" style="text-align: center; padding: 4rem 2rem;">
+    <p style="color: var(--text-muted); margin-bottom: 1rem;">No analysis history found. Start by uploading your first resume!</p>
+    <a href="/dashboard" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">Go to Dashboard &rarr;</a>
+</div>
+{% endif %}
+{% endblock %}
