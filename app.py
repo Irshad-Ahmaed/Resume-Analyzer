@@ -17,7 +17,7 @@ Base.metadata.create_all(bind=engine)  # create all tables if not exist
 
 @app.route("/")
 def home():
-    if "user" in session:
+    if "user" in session: # what is session: It is a built-in dictionary that is used to store the user's information.
         return redirect("/dashboard")
     return redirect("/login")
 
@@ -30,7 +30,13 @@ def login():
         email = request.form.get("email")
         password = request.form.get("password")
 
-        with SessionLocal() as db:
+        # what this logic is doing with help of with SessionLocal() as db:
+        # this is doing the same thing as doing this: 
+        # db = SessionLocal()
+        # user = db.query(models.User).filter_by(email = email).first()
+        # db.close() but it is doing in a single line
+        
+        with SessionLocal() as db: #SessionLocal() is a function that returns a new database session.
             user = db.query(models.User).filter_by(email = email).first()
 
             if not user or not check_password_hash(user.hashed_password, password):
@@ -156,6 +162,13 @@ def history():
         return redirect("/login")
 
     import uuid
+    # What this logic doing step by step: 
+    # 1. Get the current user's ID from the session
+    # 2. Convert it to a UUID object
+    # 3. Query the database for all reports made by that user
+    # 4. Order them by creation date in descending order
+    # 5. Parse the JSON result for each report
+    # 6. Return the list of reports to the template
     with SessionLocal() as db:
         # Get the UUID object from the session string
         user_id_obj = uuid.UUID(session["user"]["id"])
@@ -185,6 +198,13 @@ def view_report(report_id):
     if "user" not in session:
         return redirect("/login")
 
+    # What this logic doing step by step: 
+    # 1. Get the current user's ID from the session
+    # 2. Convert it to a UUID object
+    # 3. Query the database for the specific report using the report_id
+    # 4. Check if the report exists and belongs to the current user
+    # 5. Parse the JSON result for the report
+    # 6. Return the report to the template
     with SessionLocal() as db:
         report = db.query(models.Report).filter_by(id=report_id).first()
         if not report or str(report.user_id) != session["user"]["id"]:

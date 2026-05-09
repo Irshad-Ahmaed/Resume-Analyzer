@@ -47,6 +47,17 @@ def analyze_resume(resume_text, user_goal, experience):
         )
 
         result_text = response.text.strip()
+
+        # What this logic doing step by step: 
+        # 1. Import the re module (regular expressions)
+        # 2. Use re.search() to find the first occurrence of the pattern r'\{.*\}'
+        # 3. The pattern r'\{.*\}' matches: 
+        #    - \{ : A literal opening curly brace
+        #    - .* : Any character (.), zero or more times (*)
+        #    - \} : A literal closing curly brace
+        #    - The re.DOTALL flag makes . match newline characters as well
+        # 4. The search looks for the first { ... } block in the result_text
+        # 5. If a match is found, it extracts the matched substring and assigns it to result_text
         
         import re
         match = re.search(r'\{.*\}', result_text, re.DOTALL)
